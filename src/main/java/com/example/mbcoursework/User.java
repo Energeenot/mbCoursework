@@ -6,10 +6,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class User {
+
+    private int lines;
     private String currentLogin;
     private String currentPassword;
     private List<String> data;
@@ -37,7 +40,8 @@ public class User {
         return currentPassword;
     }
 
-    public boolean entrance() {
+    public boolean entrance() throws FileNotFoundException {
+        lines = getLineCount("C:\\Users\\abram\\Desktop\\entrance.txt");
         String login = null;
         String password = null;
 
@@ -48,12 +52,12 @@ public class User {
 //            while ((line = reader.readLine()) != null) {
 //                System.out.println(line);
 //            }
-            for (int i = 0; i < 2; i++){
+            for (int i = 0; i < lines; i++){
                 line = reader.readLine();
-                if (i == 0){
+                if (i == 0 || i % 2 ==0){
                     login = line;
                 }
-                if (i == 1){
+                if (i % 2 != 0){
                     password = line;
                 }
             }
@@ -70,5 +74,21 @@ public class User {
             System.out.println("kayf");
             return true;
         }
+    }
+
+    public static int getLineCount(String filename) throws FileNotFoundException {
+        File file = new File(filename);
+        Scanner scanner = new Scanner(file);
+        int lines = 0;
+
+        while (scanner.hasNext()) {
+            if (Objects.equals(scanner.nextLine(), "")){
+                break;
+            }
+            lines++;
+        }
+
+        scanner.close();
+        return lines;
     }
 }
