@@ -41,6 +41,7 @@ public class User {
     }
 
     public boolean entrance() throws FileNotFoundException {
+        boolean meaning = false;
         lines = getLineCount("C:\\Users\\abram\\Desktop\\entrance.txt");
         String login = null;
         String password = null;
@@ -60,6 +61,14 @@ public class User {
                 if (i % 2 != 0){
                     password = line;
                 }
+                if (!Objects.equals(currentLogin, login) && !Objects.equals(currentPassword, password)) {
+                    System.out.println("fck");
+                    meaning = false;
+                } else{
+                    System.out.println("kayf");
+                    meaning = true;
+                    break;
+                }
             }
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
@@ -67,13 +76,7 @@ public class User {
 
 //        System.out.println("");
 //        System.out.println(login + " " + password);
-        if (!Objects.equals(currentLogin, login) && !Objects.equals(currentPassword, password)) {
-            System.out.println("fck");
-            return false;
-        } else{
-            System.out.println("kayf");
-            return true;
-        }
+        return meaning;
     }
 
     public static int getLineCount(String filename) throws FileNotFoundException {
