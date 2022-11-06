@@ -25,7 +25,7 @@
       <PasswordField fx:id="pas" />
     </HBox>
     <HBox alignment="CENTER" spacing="10">
-        <Button onAction="#onHelloButtonClick" text="Войти" />
+        <Button fx:id="enter" onAction="#onHelloButtonClick" text="Войти" />
         <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancelButtonClick" text="Отмена" />
     </HBox>
 

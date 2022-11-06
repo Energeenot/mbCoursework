@@ -2,23 +2,15 @@ package com.example.mbcoursework;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class HelloController {
 
     @FXML
     public Hyperlink register;
+    @FXML
+    public Button enter;
     @FXML
     private Label welcomeText;
     @FXML
@@ -27,7 +19,7 @@ public class HelloController {
     private PasswordField pas;
 
     @FXML
-    protected void onHelloButtonClick() throws FileNotFoundException {
+    protected void onHelloButtonClick() throws Exception {
         String log = textField1.getText();
         System.out.println(log);
         String pass = pas.getText();
@@ -35,6 +27,10 @@ public class HelloController {
         User user = new User(log, pass);
         if (user.entrance()){
             welcomeText.setText("Entering...");
+            ViewPatientStage viewPatientStage = new ViewPatientStage();
+            Stage stage = (Stage) enter.getScene().getWindow();
+            viewPatientStage.start(stage);
+
         }else {
             welcomeText.setText("The data entering incorrectly");
 //            try {
