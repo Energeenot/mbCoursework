@@ -92,6 +92,13 @@ public class RegisterController {
 
     }
 
+    @FXML
+    protected  void onBackButtonClick() throws IOException {
+        HelloApplication helloApplication = new HelloApplication();
+        Stage stage = (Stage) reg.getScene().getWindow();
+        helloApplication.start(stage);
+    }
+
     public void setLines(int lines) {
         this.lines = lines;
     }

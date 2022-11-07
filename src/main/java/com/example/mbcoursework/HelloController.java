@@ -32,7 +32,7 @@ public class HelloController {
             viewPatientStage.start(stage);
 
         }else {
-            welcomeText.setText("The data entering incorrectly");
+            welcomeText.setText("Данные введены не правильно");
 //            try {
 //                Thread.sleep(5000);
 //            } catch (InterruptedException e) {
