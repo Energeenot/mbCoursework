@@ -4,23 +4,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.*;
+
 
 public class ViewPatientStage {
     public Stage stage;
-    private final ObservableList<Patient> patientData = FXCollections.observableArrayList();
+    protected static final ObservableList<Patient> patientData = FXCollections.observableArrayList();
     @FXML
     private TableView<Patient> listTable;
     @FXML
@@ -39,6 +39,8 @@ public class ViewPatientStage {
     private Label complaints;
     @FXML
     private Label diagnosis;
+    @FXML
+    private Label medic;
 
 
 
@@ -51,7 +53,6 @@ public class ViewPatientStage {
         stage.setTitle("Пациенты и информация.");
         stage.setScene(scene);
         stage.show();
-//        Patient patient = new Patient("Говорят палка стреляет", "06.11.2022", "Sovetskiy", "01.06.2022, 05.11.2022", "bolit golova i nasmork zadolbal", "prostyda");
 
     }
 
@@ -66,10 +67,10 @@ public class ViewPatientStage {
                 String dateApplication = bufferedReader.readLine();
                 String complaints = bufferedReader.readLine();
                 String diagnosis = bufferedReader.readLine();
-                patientData.add(new Patient(fio, dateBirth, area, dateApplication, complaints, diagnosis));
+                String medic = bufferedReader.readLine();
+                patientData.add(new Patient(fio, dateBirth, area, dateApplication, complaints, diagnosis, medic));
             }
         } catch (IOException e){}
-//        patientData.add(new Patient("Говорят палка стреляет", "06.11.2022", "Sovetskiy", "01.06.2022, 05.11.2022", "bolit golova i nasmork zadolbal", "prostyda"));
         fio.setCellValueFactory(new PropertyValueFactory<>("fio"));
         dateBirth.setCellValueFactory(new PropertyValueFactory<>("dateBirth"));
         listTable.setItems(patientData);
@@ -87,6 +88,7 @@ public class ViewPatientStage {
             dateApplication.setText(patient.getDateApplication().toString());
             complaints.setText(patient.getComplaints().toString());
             diagnosis.setText(patient.getDiagnosis().toString());
+            medic.setText(patient.getMedic().toString());
         } else {
             fioLabel.setText("");
             dateBirthLabel.setText("");
@@ -94,6 +96,137 @@ public class ViewPatientStage {
             dateApplication.setText("");
             complaints.setText("");
             diagnosis.setText("");
+            medic.setText("");
+        }
+    }
+
+    public boolean showPatientEditDialog(Patient patient){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(EditSceneController.class.getResource("editScene.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Редактирование данных");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(null);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            EditSceneController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setPatient(patient);
+
+            dialogStage.showAndWait();
+            return controller.isSaveClicked();
+
+        } catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @FXML
+    private void handleNewPatient() throws IOException{
+        Patient tempPatient = new Patient();
+        boolean saveClicked = showPatientEditDialog(tempPatient);
+        if (saveClicked){
+            patientData.add(tempPatient);
+            listTable.setItems(patientData);
+            try (FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
+                for (Patient patient : listTable.getItems()){
+                    bufferedWriter.write(patient.getFio() + "\n");
+                    bufferedWriter.write(patient.getDateApplication() + "\n");
+                    bufferedWriter.write(patient.getArea() + "\n");
+                    bufferedWriter.write(patient.getDateApplication() + "\n");
+                    bufferedWriter.write(patient.getComplaints() + "\n");
+                    bufferedWriter.write(patient.getDiagnosis() + "\n");
+                    bufferedWriter.write(patient.getMedic() + "\n");
+                }
+            }
+            catch(IOException e){}
+        }
+    }
+
+    @FXML
+    private void handleEditPatient(){
+        Patient selectedPatient = listTable.getSelectionModel().getSelectedItem();
+        if (selectedPatient != null){
+            boolean saveClicked = showPatientEditDialog(selectedPatient);
+            if (saveClicked){
+                showPatientDetails(selectedPatient);
+                int selectedIndex = listTable.getSelectionModel().getSelectedIndex();
+                patientData.set(selectedIndex, selectedPatient);
+                try (FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);){
+                    for (Patient patient : listTable.getItems()){
+                        bufferedWriter.write(patient.getFio() + "\n");
+                        bufferedWriter.write(patient.getDateBirth() + "\n");
+                        bufferedWriter.write(patient.getArea() + "\n");
+                        bufferedWriter.write(patient.getDateApplication() + "\n");
+                        bufferedWriter.write(patient.getComplaints() + "\n");
+                        bufferedWriter.write(patient.getDiagnosis() + "\n");
+                        bufferedWriter.write(patient.getMedic() + "\n");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(null);
+            alert.setTitle("Никто не выбран");
+            alert.setHeaderText("Нет выбранного пациента");
+            alert.setContentText("Выберите пациента в таблице");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void newPatient(){
+        Stage stage = new Stage();
+        stage.setTitle("new Patient");
+        Parent root = null;
+        try{
+            root = FXMLLoader.load(getClass().getResource("editScene.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setScene(new Scene(root, 700, 400));
+        stage.show();
+        //if (saveClicked){
+//            patientData.add(tempPatient);
+//        }
+    }
+
+    @FXML
+    private void handleDeletePatient(){
+        int selectedIndex = listTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0){
+            listTable.getItems().remove(selectedIndex);
+            try {
+                FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                for (Patient patient : listTable.getItems()){
+                    bufferedWriter.write(patient.getFio() + "\n");
+                    bufferedWriter.write(patient.getDateBirth() + "\n");
+                    bufferedWriter.write(patient.getArea() + "\n");
+                    bufferedWriter.write(patient.getDateApplication() + "\n");
+                    bufferedWriter.write(patient.getComplaints() + "\n");
+                    bufferedWriter.write(patient.getDiagnosis() + "\n");
+                    bufferedWriter.write(patient.getMedic());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(null);
+            alert.setTitle("Не выделен");
+            alert.setHeaderText("Не выбран пациент");
+            alert.setContentText("Выберите пациента в таблице");
+            alert.showAndWait();
         }
     }
 }

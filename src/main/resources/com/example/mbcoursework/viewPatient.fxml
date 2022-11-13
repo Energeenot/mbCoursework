@@ -45,6 +45,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="60.80000000000001" minHeight="10.0" prefHeight="30.400000000000006" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="33.59998168945313" minHeight="0.0" prefHeight="30.400000000000006" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.59998168945313" minHeight="10.0" prefHeight="30.400000000000006" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label text="ФИО" />
@@ -59,13 +60,15 @@
                               <Label text="Диагноз" GridPane.rowIndex="5" />
                               <Label fx:id="diagnosis" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Label fx:id="fioLabel" text="Label" GridPane.columnIndex="1" />
+                              <Label text="Врач" GridPane.rowIndex="6" />
+                              <Label fx:id="medic" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
                         <HBox layoutX="14.0" layoutY="457.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.599999999999966" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Открыть карту" />
-                              <Button mnemonicParsing="false" text="Выдать справку" />
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="137.0" snapToPixel="false" text="Анализ заболеваемости" />
+                              <Button mnemonicParsing="false" onAction="#handleEditPatient" text="Открыть карту" />
+                              <Button mnemonicParsing="false" onAction="#handleNewPatient" text="Выдать справку" />
+                              <Button mnemonicParsing="false" onAction="#handleDeletePatient" prefHeight="26.0" prefWidth="137.0" snapToPixel="false" text="Анализ заболеваемости" />
                            </children>
                         </HBox>
                      </children></AnchorPane>

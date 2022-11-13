@@ -7,23 +7,26 @@ public class Patient {
     private String dateApplication;
     private String complaints;
     private String diagnosis;
+    private String medic;
 
-//    public Patient(String fio, String dateBirth, String area, String dateApplication, String  complaints, String diagnosis){
-//        this.fio = fio;
-//        this.dateBirth = dateBirth;
-//        this.area = area;
-//        this.dateApplication = dateApplication;
-//        this.complaints = complaints;
-//        this.diagnosis = diagnosis;
-//    }
-
-    public Patient(String fio, String dateBirth, String area, String dateApplication, String complaints, String diagnosis) {
+    public Patient(String fio, String dateBirth, String area, String dateApplication, String complaints, String diagnosis, String medic) {
         this.fio = fio;
         this.dateBirth = dateBirth;
         this.area = area;
         this.dateApplication = dateApplication;
         this.complaints = complaints;
         this.diagnosis = diagnosis;
+        this.medic = medic;
+    }
+
+    public Patient() {}
+
+    public String getMedic() {
+        return medic;
+    }
+
+    public void setMedic(String medic) {
+        this.medic = medic;
     }
 
     public String getFio() {
