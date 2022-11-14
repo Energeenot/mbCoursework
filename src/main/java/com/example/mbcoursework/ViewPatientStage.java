@@ -205,9 +205,9 @@ public class ViewPatientStage {
         int selectedIndex = listTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0){
             listTable.getItems().remove(selectedIndex);
-            try {
-                FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            try
+                (FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);){
                 for (Patient patient : listTable.getItems()){
                     bufferedWriter.write(patient.getFio() + "\n");
                     bufferedWriter.write(patient.getDateBirth() + "\n");
@@ -215,7 +215,7 @@ public class ViewPatientStage {
                     bufferedWriter.write(patient.getDateApplication() + "\n");
                     bufferedWriter.write(patient.getComplaints() + "\n");
                     bufferedWriter.write(patient.getDiagnosis() + "\n");
-                    bufferedWriter.write(patient.getMedic());
+                    bufferedWriter.write(patient.getMedic() + "\n");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
