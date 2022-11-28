@@ -71,6 +71,8 @@
                               <Button mnemonicParsing="false" onAction="#handleDeletePatient" prefHeight="26.0" prefWidth="137.0" snapToPixel="false" text="Анализ заболеваемости" />
                            </children>
                         </HBox>
+                        <Button layoutX="82.0" layoutY="440.0" mnemonicParsing="false" text="Выдать справку" />
+                        <Button layoutX="208.0" layoutY="440.0" mnemonicParsing="false" text="Анализ заболеваемости" />
                      </children></AnchorPane>
               </items>
             </SplitPane>

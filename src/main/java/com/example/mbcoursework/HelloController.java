@@ -27,20 +27,18 @@ public class HelloController {
         User user = new User(log, pass);
         if (user.entrance()){
             welcomeText.setText("Entering...");
-            ViewPatientStage viewPatientStage = new ViewPatientStage();
+
+            MainMenuController mainMenuController = new MainMenuController();
             Stage stage = (Stage) enter.getScene().getWindow();
-            viewPatientStage.start(stage);
+            mainMenuController.start(stage);
+//
+//            ViewPatientStage viewPatientStage = new ViewPatientStage();
+//            Stage stage = (Stage) enter.getScene().getWindow();
+//            viewPatientStage.start(stage);
 
         }else {
             welcomeText.setText("Данные введены не правильно");
-//            try {
-//                Thread.sleep(5000);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//            welcomeText.setText("");
         }
-
     }
 
     public void onCancelButtonClick(ActionEvent actionEvent) {
@@ -52,20 +50,7 @@ public class HelloController {
     @FXML
     public void openNewStage(ActionEvent actionEvent) throws Exception {
         RegisterStage registerStage = new RegisterStage();
-//        try {
-//            registerStage.start();
-//        }catch (Exception e){}
-//        Stage stage = new Stage();
-//        stage.setTitle("Регистрация");
-
         Stage stage = (Stage) register.getScene().getWindow();
         registerStage.start(stage);
-       
-        
-//        registerStage.stage.show();
-
-//        stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-//        stage.getIcons().add(new Image(this.getClass().getResource("C:\\Users\\abram\\Downloads\\login.png").toString()));
-
     }
 }

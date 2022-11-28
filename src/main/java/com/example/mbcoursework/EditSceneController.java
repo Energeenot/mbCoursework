@@ -3,6 +3,7 @@ package com.example.mbcoursework;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -29,6 +30,10 @@ public class EditSceneController{
     private TextField diagnosis;
     @FXML
     private TextField medic;
+    @FXML
+    private TableColumn<Product, String> fioCell;
+    @FXML
+    private TableColumn<Product, String> numberOrderCell;
 
     private Stage dialogStage;
     private Patient patient = new Patient("", "", "", "", "", "", "");
@@ -128,7 +133,7 @@ public class EditSceneController{
 //                String complaints = bufferedReader.readLine();
 //                String diagnosis = bufferedReader.readLine();
 //                String medic = bufferedReader.readLine();
-////                patientData.add(new Patient(fio, dateBirth, area, dateApplication, complaints, diagnosis, medic));
+//                patientData.add(new Patient(fio, dateBirth, area, dateApplication, complaints, diagnosis, medic));
 //            }
 //        } catch (IOException e){}
 

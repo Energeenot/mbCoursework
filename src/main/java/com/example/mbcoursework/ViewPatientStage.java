@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,7 +23,7 @@ public class ViewPatientStage {
     public Stage stage;
     protected static final ObservableList<Patient> patientData = FXCollections.observableArrayList();
     @FXML
-    private TableView<Patient> listTable;
+    public TableView<Patient> listTable;
     @FXML
     private TableColumn<Patient, String> fio;
     @FXML
@@ -49,7 +50,7 @@ public class ViewPatientStage {
 
         FXMLLoader fxmlLoader = new FXMLLoader(RegisterStage.class.getResource("viewPatient.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 750, 500);
-//        stage.getIcons().add(new Image("C:\\Users\\abram\\Downloads\\medical.png"));
+        stage.getIcons().add(new Image("C:\\Users\\abram\\Downloads\\medical.png"));
         stage.setTitle("Пациенты и информация.");
         stage.setScene(scene);
         stage.show();
@@ -74,9 +75,7 @@ public class ViewPatientStage {
         fio.setCellValueFactory(new PropertyValueFactory<>("fio"));
         dateBirth.setCellValueFactory(new PropertyValueFactory<>("dateBirth"));
         listTable.setItems(patientData);
-
         showPatientDetails(null);
-
         listTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showPatientDetails(newValue));
     }
 
@@ -183,22 +182,22 @@ public class ViewPatientStage {
         }
     }
 
-    @FXML
-    private void newPatient(){
-        Stage stage = new Stage();
-        stage.setTitle("new Patient");
-        Parent root = null;
-        try{
-            root = FXMLLoader.load(getClass().getResource("editScene.fxml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setScene(new Scene(root, 700, 400));
-        stage.show();
+//    @FXML
+//    private void newPatient(){
+//        Stage stage = new Stage();
+//        stage.setTitle("new Patient");
+//        Parent root = null;
+//        try{
+//            root = FXMLLoader.load(getClass().getResource("editScene.fxml"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        stage.setScene(new Scene(root, 700, 400));
+//        stage.show();
         //if (saveClicked){
 //            patientData.add(tempPatient);
 //        }
-    }
+//    }
 
     @FXML
     private void handleDeletePatient(){

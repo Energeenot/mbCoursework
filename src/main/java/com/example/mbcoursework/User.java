@@ -50,9 +50,6 @@ public class User {
         Charset charset = StandardCharsets.US_ASCII;
         try (BufferedReader reader = Files.newBufferedReader(file.toPath(), charset)) {
             String line = null;
-//            while ((line = reader.readLine()) != null) {
-//                System.out.println(line);
-//            }
             for (int i = 0; i < lines; i++){
                 line = reader.readLine();
                 if (i == 0 || i % 2 ==0){
