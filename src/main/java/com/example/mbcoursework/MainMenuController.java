@@ -131,11 +131,12 @@ public void start(Stage stage) throws  IOException{
     @FXML
     private void changeStat(){
         comboBox1.setDisable(false);
-        list.add("Доставлено");
-        list.add("Оплачено");
+        list.add("Выполнено");
+        list.add("Ждёт выполнения");
         comboBox1.setItems(list);
     }
-
+//TODO: добавить в тз (5 лаб) описание платных услуг
+//TODO: добавть в тз поиск пациента
     private void showOrderDetails(Order order){
         if (order != null){
             int summa = 0;
@@ -173,4 +174,6 @@ public void start(Stage stage) throws  IOException{
             }
         }
     }
+    //TODO: добавить реализацию кнопок выдать справку(возможно паттерн строитель) и анализ заболеваемости
+    //TODO: (необязательно) потыкать бд(sql or mysql) или какие там требуют на джуниор разраба
 }

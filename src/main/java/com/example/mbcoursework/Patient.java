@@ -76,4 +76,14 @@ public class Patient {
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
     }
+
+    @Override
+    public String toString() {
+        return "ФИО " + fio + ", + \n" +
+                "Дата рождения " + dateBirth + ", \n" +
+                "Даты обращения " + dateApplication + ", \n" +
+                "Жалобы " + complaints + ", \n" +
+                "Диагноз " + diagnosis + ", \n" +
+                "Врач " + medic + ", \n";
+    }
 }

@@ -58,11 +58,9 @@ public class User {
                 if (i % 2 != 0){
                     password = line;
                 }
-                if (!Objects.equals(currentLogin, login) && !Objects.equals(currentPassword, password)) {
-                    System.out.println("fck");
+                if (!Objects.equals(currentLogin, login) & !Objects.equals(currentPassword, password)) {
                     meaning = false;
-                } else{
-                    System.out.println("kayf");
+                } else if (Objects.equals(currentLogin, login) & Objects.equals(currentPassword, password)){
                     meaning = true;
                     break;
                 }

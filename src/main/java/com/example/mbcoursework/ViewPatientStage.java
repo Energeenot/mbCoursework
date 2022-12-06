@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +39,8 @@ public class ViewPatientStage {
     private Label diagnosis;
     @FXML
     private Label medic;
+    @FXML
+    private TextField searchFio;
 
 
 
@@ -182,23 +181,6 @@ public class ViewPatientStage {
         }
     }
 
-//    @FXML
-//    private void newPatient(){
-//        Stage stage = new Stage();
-//        stage.setTitle("new Patient");
-//        Parent root = null;
-//        try{
-//            root = FXMLLoader.load(getClass().getResource("editScene.fxml"));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        stage.setScene(new Scene(root, 700, 400));
-//        stage.show();
-        //if (saveClicked){
-//            patientData.add(tempPatient);
-//        }
-//    }
-
     @FXML
     private void handleDeletePatient(){
         int selectedIndex = listTable.getSelectionModel().getSelectedIndex();
@@ -227,5 +209,61 @@ public class ViewPatientStage {
             alert.setContentText("Выберите пациента в таблице");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void searchPatient(){
+        String searchable = searchFio.getText();
+        boolean found = false;
+        int count = 0;
+        try(FileReader fileReader = new FileReader("C:\\Users\\abram\\Desktop\\patients.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            while (bufferedReader.ready()){
+                count++;
+                if (searchable.equals(bufferedReader.readLine())){
+                    found = true;
+                    Patient tempPatient = new Patient(searchable, bufferedReader.readLine().toString(),
+                            bufferedReader.readLine().toString(), bufferedReader.readLine().toString(),
+                            bufferedReader.readLine().toString(), bufferedReader.readLine().toString(),
+                            bufferedReader.readLine().toString());
+                    showPatientDetails(tempPatient);
+                    //TODO: спросить  или нагуглить как програмно выбрать строку из tableview, чтобы не было проблемы пустого пациента
+                    break;
+                }
+                else{
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                }
+            }
+            if (!found){
+                System.out.println("Данный пациент не найдена");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Пациент не найден");
+                alert.setContentText("Пациент с таким ФИО не найден.");
+                alert.showAndWait();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        searchFio.setText("");
+    }
+
+    @FXML
+    private void issueCertificate(){
+        Patient selectedPatient = listTable.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Справка");
+        alert.setHeaderText("Настоящая справка");
+        alert.setContentText(selectedPatient.toString() + "\n" +
+                "  _____ " + "\n" +
+                "/          \\ " + "\n" +
+                "|печать|" + "\n" +
+                "\\         /" + "\n" +
+                " ------ ");
+        alert.showAndWait();
     }
 }

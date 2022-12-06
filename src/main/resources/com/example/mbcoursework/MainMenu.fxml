@@ -69,7 +69,7 @@
                                   <TableColumn fx:id="fioCell" prefWidth="141.60003662109375" text="Фамилия И.О." />
                                 </columns>
                               </TableView>
-                              <Label layoutX="309.0" layoutY="79.0" text="Статус заказа" />
+                              <Label layoutX="293.0" layoutY="80.0" text="Статус выполнения" />
                               <Label layoutX="313.0" layoutY="131.0" text="Товары в заказе" />
                               <Label layoutX="308.0" layoutY="262.0" text="Сумма заказа" />
                               <Label fx:id="amountOrder" layoutX="464.0" layoutY="262.0" />

@@ -67,9 +67,8 @@ public class RegisterController {
         }
 
         if (countAlert == 0){
-//            запись в файл логина и пароля и вывод сообщения что вы успешно зарегистрировались
+//            запись в файл логина и пароля и вывод сообщения, что вы успешно зарегистрировались
 
-            String str = "World";
             BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\abram\\Desktop\\entrance.txt", true));
             writer.append("\n");
             writer.append(login);
