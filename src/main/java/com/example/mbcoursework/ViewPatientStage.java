@@ -2,10 +2,15 @@ package com.example.mbcoursework;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -41,9 +46,13 @@ public class ViewPatientStage {
     private Label medic;
     @FXML
     private TextField searchFio;
+    @FXML
+    private Button morbidityButton;
 
 
-
+    public TableView<Patient> getListTable() {
+        return listTable;
+    }
 
     public void start(Stage stage) throws Exception {
 
@@ -76,6 +85,8 @@ public class ViewPatientStage {
         listTable.setItems(patientData);
         showPatientDetails(null);
         listTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showPatientDetails(newValue));
+
+//        comboBox.setDisable(true);
     }
 
     private void showPatientDetails(Patient patient){
@@ -125,26 +136,29 @@ public class ViewPatientStage {
     }
 
     @FXML
-    private void handleNewPatient() throws IOException{
-        Patient tempPatient = new Patient();
-        boolean saveClicked = showPatientEditDialog(tempPatient);
-        if (saveClicked){
-            patientData.add(tempPatient);
-            listTable.setItems(patientData);
-            try (FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
-                for (Patient patient : listTable.getItems()){
-                    bufferedWriter.write(patient.getFio() + "\n");
-                    bufferedWriter.write(patient.getDateApplication() + "\n");
-                    bufferedWriter.write(patient.getArea() + "\n");
-                    bufferedWriter.write(patient.getDateApplication() + "\n");
-                    bufferedWriter.write(patient.getComplaints() + "\n");
-                    bufferedWriter.write(patient.getDiagnosis() + "\n");
-                    bufferedWriter.write(patient.getMedic() + "\n");
-                }
-            }
-            catch(IOException e){}
-        }
+    private void handleNewPatient(ActionEvent actionEvent) throws IOException{
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(EditSceneController.class.getResource("editScene.fxml"));
+//        AnchorPane page = (AnchorPane) loader.load();
+//        Patient tempPatient = new Patient();
+//        boolean saveClicked = showPatientEditDialog(tempPatient);
+//        if (saveClicked){
+//            patientData.add(tempPatient);
+//            listTable.setItems(patientData);
+//            try (FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
+//            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
+//                for (Patient patient : listTable.getItems()){
+//                    bufferedWriter.write(patient.getFio() + "\n");
+//                    bufferedWriter.write(patient.getDateApplication() + "\n");
+//                    bufferedWriter.write(patient.getArea() + "\n");
+//                    bufferedWriter.write(patient.getDateApplication() + "\n");
+//                    bufferedWriter.write(patient.getComplaints() + "\n");
+//                    bufferedWriter.write(patient.getDiagnosis() + "\n");
+//                    bufferedWriter.write(patient.getMedic() + "\n");
+//                }
+//            }
+//            catch(IOException e){}
+//        }
     }
 
     @FXML
@@ -253,17 +267,34 @@ public class ViewPatientStage {
     }
 
     @FXML
-    private void issueCertificate(){
+    private void issueCertificate() {
         Patient selectedPatient = listTable.getSelectionModel().getSelectedItem();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Справка");
-        alert.setHeaderText("Настоящая справка");
-        alert.setContentText(selectedPatient.toString() + "\n" +
-                "  _____ " + "\n" +
-                "/          \\ " + "\n" +
-                "|печать|" + "\n" +
-                "\\         /" + "\n" +
-                " ------ ");
-        alert.showAndWait();
+        if (selectedPatient != null) {
+//            Patient selectedPatient = listTable.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Справка");
+            alert.setHeaderText("Настоящая справка");
+            alert.setContentText(selectedPatient.toString() + "\n" +
+                    "  _____ " + "\n" +
+                    "/          \\ " + "\n" +
+                    "|печать|" + "\n" +
+                    "\\         /" + "\n" +
+                    " ------ ");
+            alert.showAndWait();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(null);
+            alert.setTitle("Не выделен");
+            alert.setHeaderText("Не выбран пациент");
+            alert.setContentText("Выберите пациента в таблице");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void morbidityAnalysis() throws Exception {
+        MorbidityAnalysisController morbidityAnalysisController = new MorbidityAnalysisController();
+        Stage stage1 = (Stage) morbidityButton.getScene().getWindow();
+        morbidityAnalysisController.start(stage1);
     }
 }

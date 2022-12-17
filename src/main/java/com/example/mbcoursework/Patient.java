@@ -79,7 +79,7 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "ФИО " + fio + ", + \n" +
+        return "ФИО " + fio + ", \n" +
                 "Дата рождения " + dateBirth + ", \n" +
                 "Даты обращения " + dateApplication + ", \n" +
                 "Жалобы " + complaints + ", \n" +

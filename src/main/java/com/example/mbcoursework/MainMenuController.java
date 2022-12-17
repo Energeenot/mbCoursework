@@ -1,26 +1,24 @@
 package com.example.mbcoursework;
 
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.util.Objects;
-import java.util.ResourceBundle;
+
+
+import static com.example.mbcoursework.ViewPatientStage.patientData;
 
 public class MainMenuController{
 
@@ -28,8 +26,6 @@ public class MainMenuController{
     private Tab catalogTab;
     @FXML
     private Tab tabOrder;
-//    @FXML
-//    private MenuItem patientItem;
     @FXML
     private TabPane tabPanel;
     @FXML
@@ -65,10 +61,10 @@ public class MainMenuController{
     }
 
     @FXML
-    private void productsNewWindow(ActionEvent actionEvent){
+    private void patientsNewWindow(ActionEvent actionEvent){
 //        ViewPatientStage.listTable.getItems().clear();
         Stage stage = new Stage();
-        stage.setTitle("Каталог");
+        stage.setTitle("Пациенты");
         Parent root = null;
         try{
             root = FXMLLoader.load(getClass().getResource("viewPatient.fxml"));
@@ -77,6 +73,58 @@ public class MainMenuController{
         }
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    @FXML
+    private void handleNewPatient(ActionEvent actionEvent) throws IOException{
+        ViewPatientStage viewPatientStage = new ViewPatientStage();
+
+        Patient tempPatient = new Patient();
+        boolean saveClicked = showPatientEditDialog(tempPatient);
+        if (saveClicked){
+            patientData.add(tempPatient);
+            viewPatientStage.getListTable().setItems(patientData);
+//            listTable.setItems(patientData);
+            try (FileWriter fileWriter = new FileWriter("C:\\Users\\abram\\Desktop\\patients.txt");
+                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
+                for (Patient patient : viewPatientStage.getListTable().getItems()){
+                    bufferedWriter.write(patient.getFio() + "\n");
+                    bufferedWriter.write(patient.getDateApplication() + "\n");
+                    bufferedWriter.write(patient.getArea() + "\n");
+                    bufferedWriter.write(patient.getDateApplication() + "\n");
+                    bufferedWriter.write(patient.getComplaints() + "\n");
+                    bufferedWriter.write(patient.getDiagnosis() + "\n");
+                    bufferedWriter.write(patient.getMedic() + "\n");
+                }
+            }
+            catch(IOException e){}
+        }
+    }
+
+    public boolean showPatientEditDialog(Patient patient){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(EditSceneController.class.getResource("editScene.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Редактирование данных");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(null);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            EditSceneController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setPatient(patient);
+
+            dialogStage.showAndWait();
+            return controller.isSaveClicked();
+
+        } catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @FXML
@@ -113,8 +161,6 @@ public void start(Stage stage) throws  IOException{
                 bufferedReader.readLine();
                 bufferedReader.readLine();
                 bufferedReader.readLine();
-                // цена товара должна высчитываться сама, как к ней доступ получить пока хз,
-                // где должны храниться цены на товары тоже хз
                 orderData.add(new Order(numberOrderCell, fioCell));
             }
         } catch (IOException e){}
@@ -125,7 +171,6 @@ public void start(Stage stage) throws  IOException{
 
         showOrderDetails(null);
         tableNumberAndFio.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showOrderDetails(newValue));
-
     }
 
     @FXML
@@ -135,8 +180,7 @@ public void start(Stage stage) throws  IOException{
         list.add("Ждёт выполнения");
         comboBox1.setItems(list);
     }
-//TODO: добавить в тз (5 лаб) описание платных услуг
-//TODO: добавть в тз поиск пациента
+
     private void showOrderDetails(Order order){
         if (order != null){
             int summa = 0;
@@ -174,6 +218,6 @@ public void start(Stage stage) throws  IOException{
             }
         }
     }
-    //TODO: добавить реализацию кнопок выдать справку(возможно паттерн строитель) и анализ заболеваемости
     //TODO: (необязательно) потыкать бд(sql or mysql) или какие там требуют на джуниор разраба
+    //TODO: анализ заболеваемости по месяцам и районам (при нажатии на кнопку анализ должно открыться чек бокс в котором я выберу месяц или район и дальше в методе считывать с файла либо одно либо другое и в алерт сую эти данные
 }

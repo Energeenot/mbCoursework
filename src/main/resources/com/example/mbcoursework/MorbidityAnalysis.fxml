@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mbcoursework.MorbidityAnalysisController">
+   <children>
+      <Button fx:id="byMonth" layoutX="89.0" layoutY="161.0" mnemonicParsing="false" onAction="#onByMonthClick" text="Анализ" />
+      <Button fx:id="byDistricts" layoutX="299.0" layoutY="161.0" mnemonicParsing="false" onAction="#onByDistrictsClick" text="Анализ" />
+      <Label layoutX="83.0" layoutY="130.0" text="По месяцам" />
+      <Label layoutX="293.0" layoutY="130.0" text="По районам" />
+      <Button fx:id="cancel" layoutX="196.0" layoutY="230.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Назад" />
+   </children>
+</AnchorPane>
